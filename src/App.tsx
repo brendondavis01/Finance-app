@@ -73,20 +73,28 @@ function App() {
     setAppMode('onboarding');
   };
 
+  // Check if Clerk is properly configured
+  const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+  const isClerkConfigured = clerkKey && clerkKey !== 'pk_test_placeholder';
+
   if (appMode === 'budget') {
     return (
-      <ProtectedRoute>
-        <div>
-          <Header />
+      <div>
+        <Header />
+        {isClerkConfigured ? (
+          <ProtectedRoute>
+            <BudgetTracker />
+          </ProtectedRoute>
+        ) : (
           <BudgetTracker />
-        </div>
-      </ProtectedRoute>
+        )}
+      </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-blue-50 to-indigo-100">
-      <AuthSync />
+      {isClerkConfigured && <AuthSync />}
       <Header />
       <div className="container mx-auto px-4 py-8">
         {currentStep !== 'welcome' && currentStep !== 'results' && (
