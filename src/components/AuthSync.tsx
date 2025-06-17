@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
-import { supabase } from '../../supabase-client';
+import { supabase } from '../supabase-client';
 
 export const AuthSync = () => {
   const { getToken, isSignedIn } = useAuth();

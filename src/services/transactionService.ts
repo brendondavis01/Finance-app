@@ -1,4 +1,4 @@
-import { supabase } from '../../supabase-client';
+import { supabase } from '../supabase-client';
 import { 
   Transaction, 
   Category, 
@@ -163,4 +163,4 @@ export const budgetGoalService = {
 
     if (error) throw error;
   }
-}; 
+};

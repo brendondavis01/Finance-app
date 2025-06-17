@@ -1,4 +1,4 @@
-import { supabase } from '../../supabase-client';
+import { supabase } from '../supabase-client';
 import { CreateTransactionData, Transaction } from '../types/database';
 
 /**
@@ -278,4 +278,4 @@ export const importBudgetEntriesFromCSV = (csvContent: string): CreateTransactio
   }
 
   return entries;
-}; 
+};
