@@ -52,6 +52,29 @@ export const GoalsTracker: React.FC<GoalsTrackerProps> = ({
     return diffDays;
   };
 
+  // Helper function to get progress bar gradient class
+  const getProgressBarGradient = (progress: number) => {
+    if (progress >= 100) return 'bg-gradient-to-r from-green-400 to-green-500';
+    if (progress >= 75) return 'bg-gradient-to-r from-blue-400 to-blue-500';
+    if (progress >= 50) return 'bg-gradient-to-r from-yellow-400 to-orange-500';
+    return 'bg-gradient-to-r from-purple-400 to-purple-500';
+  };
+
+  // Helper function to get deadline badge classes
+  const getDeadlineBadgeClasses = (daysLeft: number) => {
+    if (daysLeft < 0) return 'bg-red-100 text-red-800';
+    if (daysLeft <= 7) return 'bg-orange-100 text-orange-800';
+    if (daysLeft <= 30) return 'bg-yellow-100 text-yellow-800';
+    return 'bg-green-100 text-green-800';
+  };
+
+  // Helper function to get deadline text
+  const getDeadlineText = (daysLeft: number) => {
+    if (daysLeft < 0) return `${Math.abs(daysLeft)} days overdue`;
+    if (daysLeft === 0) return 'Due today!';
+    return `${daysLeft} days left`;
+  };
+
   const handleAddToGoal = (goalId: string) => {
     const amount = parseFloat(addAmount);
     if (amount > 0) {
@@ -99,6 +122,7 @@ export const GoalsTracker: React.FC<GoalsTrackerProps> = ({
               const categoryInfo = getCategoryInfo(goal.category);
               const progress = calculateProgress(goal.currentAmount, goal.targetAmount);
               const daysLeft = getDaysUntilDeadline(goal.deadline);
+              const progressBarGradient = getProgressBarGradient(progress);
               
               return (
                 <div key={goal.id} className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all">
@@ -140,12 +164,7 @@ export const GoalsTracker: React.FC<GoalsTrackerProps> = ({
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-4 mb-2">
                       <div
-                        className={`h-4 rounded-full transition-all duration-500 ${
-                          progress >= 100 ? 'bg-gradient-to-r from-green-400 to-green-500' :
-                          progress >= 75 ? 'bg-gradient-to-r from-blue-400 to-blue-500' :
-                          progress >= 50 ? 'bg-gradient-to-r from-yellow-400 to-orange-500' :
-                          'bg-gradient-to-r from-purple-400 to-purple-500'
-                        }`}
+                        className={`h-4 rounded-full transition-all duration-500 ${progressBarGradient}`}
                         style={{ width: `${progress}%` }}
                       />
                     </div>
@@ -163,15 +182,8 @@ export const GoalsTracker: React.FC<GoalsTrackerProps> = ({
                         Target: {formatDate(goal.deadline)}
                       </span>
                       {daysLeft !== null && (
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          daysLeft < 0 ? 'bg-red-100 text-red-800' :
-                          daysLeft <= 7 ? 'bg-orange-100 text-orange-800' :
-                          daysLeft <= 30 ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-green-100 text-green-800'
-                        }`}>
-                          {daysLeft < 0 ? `${Math.abs(daysLeft)} days overdue` :
-                           daysLeft === 0 ? 'Due today!' :
-                           `${daysLeft} days left`}
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDeadlineBadgeClasses(daysLeft)}`}>
+                          {getDeadlineText(daysLeft)}
                         </span>
                       )}
                     </div>
