@@ -7,8 +7,8 @@ export const AuthSync = () => {
 
   useEffect(() => {
     const syncSession = async () => {
-      if (isSignedIn) {
-        try {
+      try {
+        if (isSignedIn) {
           // Get the JWT token from Clerk
           const token = await getToken({ template: 'supabase' });
           
@@ -23,12 +23,12 @@ export const AuthSync = () => {
               console.error('Error syncing session with Supabase:', error);
             }
           }
-        } catch (error) {
-          console.error('Error getting token from Clerk:', error);
+        } else {
+          // Sign out from Supabase when user is not signed in
+          await supabase.auth.signOut();
         }
-      } else {
-        // Sign out from Supabase when user is not signed in
-        await supabase.auth.signOut();
+      } catch (error) {
+        console.error('Error in AuthSync:', error);
       }
     };
 

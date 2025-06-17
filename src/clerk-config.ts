@@ -5,7 +5,7 @@ const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || 'pk_
 
 // For development, we'll use a placeholder that won't cause the app to crash
 if (!CLERK_PUBLISHABLE_KEY || CLERK_PUBLISHABLE_KEY === 'pk_test_placeholder') {
-  console.warn('Clerk publishable key not configured. Authentication features will be disabled.');
+  console.warn('Clerk publishable key not configured. Running in demo mode without authentication.');
 }
 
 export { ClerkProvider, CLERK_PUBLISHABLE_KEY };
