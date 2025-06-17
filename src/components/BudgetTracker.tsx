@@ -26,7 +26,6 @@ export const BudgetTracker: React.FC = () => {
     const savedData = localStorage.getItem('budgetData');
     if (savedData) {
       const parsed = JSON.parse(savedData);
-      // Ensure all required fields exist for backward compatibility
       setBudgetData({
         ...parsed,
         savingsGoals: parsed.savingsGoals || [],
@@ -40,7 +39,6 @@ export const BudgetTracker: React.FC = () => {
     localStorage.setItem('budgetData', JSON.stringify(budgetData));
   }, [budgetData]);
 
-  // Add learning activity helper
   const addLearningActivity = (type: LearningActivity['type'], description: string, points: number = 5) => {
     const activity: LearningActivity = {
       id: Date.now().toString(),
@@ -68,7 +66,6 @@ export const BudgetTracker: React.FC = () => {
       transactions: [newTransaction, ...prev.transactions]
     }));
     
-    // Add learning activity
     addLearningActivity(
       'transaction_added',
       `Added ${transaction.type}: ${transaction.description}`,
@@ -110,7 +107,6 @@ export const BudgetTracker: React.FC = () => {
       savingsGoals: [...prev.savingsGoals, newGoal]
     }));
 
-    // Add learning activity
     addLearningActivity('goal_created', `Created goal: ${goalData.title}`, 20);
   };
 
@@ -122,7 +118,6 @@ export const BudgetTracker: React.FC = () => {
       )
     }));
 
-    // Add learning activity for goal completion
     if (updates.completed) {
       const goal = budgetData.savingsGoals.find(g => g.id === id);
       if (goal) {
@@ -148,7 +143,6 @@ export const BudgetTracker: React.FC = () => {
       )
     }));
 
-    // Add learning activity
     const goal = budgetData.savingsGoals.find(g => g.id === goalId);
     if (goal) {
       addLearningActivity('goal_created', `Added $${amount.toFixed(2)} to ${goal.title}`, 10);

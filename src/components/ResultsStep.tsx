@@ -50,38 +50,6 @@ export const ResultsStep: React.FC<ResultsStepProps> = ({ data, onRestart, onSta
     .filter(goal => data.goals.includes(goal.id))
     .map(goal => goal.label);
 
-  // Add initial learning activity when starting
-  const handleStartLearning = () => {
-    // Add initial learning activities to localStorage
-    const initialActivities = [
-      {
-        id: Date.now().toString(),
-        date: new Date().toISOString(),
-        type: 'quiz' as const,
-        description: `Completed onboarding quiz - Level: ${data.level}`,
-        points: data.knowledgeScore
-      }
-    ];
-
-    const existingData = localStorage.getItem('budgetData');
-    if (existingData) {
-      const parsed = JSON.parse(existingData);
-      parsed.learningActivities = [...(parsed.learningActivities || []), ...initialActivities];
-      localStorage.setItem('budgetData', JSON.stringify(parsed));
-    } else {
-      const newBudgetData = {
-        transactions: [],
-        monthlyBudget: 0,
-        categories: [],
-        savingsGoals: [],
-        learningActivities: initialActivities
-      };
-      localStorage.setItem('budgetData', JSON.stringify(newBudgetData));
-    }
-
-    onStartLearning();
-  };
-
   return (
     <div className="max-w-4xl mx-auto text-center">
       <div className="mb-8">
@@ -146,7 +114,7 @@ export const ResultsStep: React.FC<ResultsStepProps> = ({ data, onRestart, onSta
           Take Quiz Again
         </button>
         <button
-          onClick={handleStartLearning}
+          onClick={onStartLearning}
           className="px-8 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl font-semibold hover:from-purple-600 hover:to-blue-600 transition-all transform hover:scale-105"
         >
           Start Learning! 🚀

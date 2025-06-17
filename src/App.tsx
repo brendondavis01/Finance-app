@@ -7,8 +7,6 @@ import { QuizStep } from './components/QuizStep';
 import { ResultsStep } from './components/ResultsStep';
 import { BudgetTracker } from './components/BudgetTracker';
 import { Header } from './components/Header';
-import { AuthSync } from './components/AuthSync';
-import { ProtectedRoute } from './components/ProtectedRoute';
 import { OnboardingData } from './types/onboarding';
 import { calculateLevel } from './utils/levelCalculator';
 
@@ -69,32 +67,17 @@ function App() {
     setAppMode('budget');
   };
 
-  const handleBackToOnboarding = () => {
-    setAppMode('onboarding');
-  };
-
-  // Check if Clerk is properly configured
-  const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-  const isClerkConfigured = clerkKey && clerkKey !== 'pk_test_placeholder';
-
   if (appMode === 'budget') {
     return (
       <div>
         <Header />
-        {isClerkConfigured ? (
-          <ProtectedRoute>
-            <BudgetTracker />
-          </ProtectedRoute>
-        ) : (
-          <BudgetTracker />
-        )}
+        <BudgetTracker />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-blue-50 to-indigo-100">
-      {isClerkConfigured && <AuthSync />}
       <Header />
       <div className="container mx-auto px-4 py-8">
         {currentStep !== 'welcome' && currentStep !== 'results' && (
